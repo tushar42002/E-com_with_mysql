@@ -23,16 +23,16 @@ const createNavebar = () => {
 <div class="user-interactions">
     <div class="search-box">
         <input type="text" class="search" placeholder="search item">
-        <button class="search-btn"><img src="img/search.png" alt=""></button>
+        <button class="search-btn"><img src="../img/search.png" alt=""></button>
     </div>
 
 
     <div class="cart" onclick="location.href = '/cart' ">
-        <img class="cart-icon" src="img/cart.png" alt="">
+        <img class="cart-icon" src="../img/cart.png" alt="">
         <span class="cart-item-count">00</span>
     </div>
     <div class="user">
-        <img src="img/user.png" alt="" class="user-icon">
+        <img src="../img/user.png" alt="" class="user-icon">
         <div class="user-icon-popup">
             <p>login to your account </p>
             <a>login</a>
@@ -87,6 +87,7 @@ const updateNavCartCounter = () => {
     let cartCounter = document.querySelector('.cart-item-count');
 
     let cartItem  = JSON.parse(localStorage.getItem('cart'));
+    console.log(cartItem);
 
     if(cartItem == null || !cartItem.length){
         cartCounter.innerHTML = '00';

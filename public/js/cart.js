@@ -1,18 +1,19 @@
 // create small product cards
 const createSmallCards = (data) => {
+    console.log(data);
     return `
     <div class="sm-product">
-        <img src="img/product-1.png" alt="" class="sm-product-img">
+        <img src="${data.image}" alt="" class="sm-product-img">
         <div class="sm-text">
-            <p class="sm-product-name">Product</p>
-            <p class="sm-des">Short des</p>
+            <p class="sm-product-name">${data.name}</p>
+            <p class="sm-des">${data.shortDes}</p>
         </div>
         <div class="item-counter">
             <button class="counter-btn decrement">-</button>
-            <p class="item-count">1</p>
+            <p class="item-count">${data.item}</p>
             <button class="counter-btn increment">+</button>
         </div>
-        <p class="sm-price">$299</p>
+        <p class="sm-price">$${data.price}</p>
         <button class="sm-delete-btn"> <img src="img/close.png" alt=""> </button>
     </div> 
     `
@@ -23,7 +24,7 @@ let totalBill = 0;
 const setCartProducts = () => {
     const cartContainer = document.querySelector('.cart-container');
 
-    let cart = JSON.parser(localStorage.getItem('cart'));
+    let cart = JSON.parse(localStorage.getItem('cart'));
     if(cart == null || !cart.length){
         cartContainer.innerHTML += `<img class="empty-img" src="img/empty-cart.png" alt="">`
     } else{
@@ -40,7 +41,7 @@ const setCartProducts = () => {
 const updateBill =() => {
     updateNavCartCounter();
     let billPrice = document.querySelector('.bill');
-    billPrice.innerHTML = `${totalBill}`;
+    billPrice.innerHTML = `$${totalBill}`;
 }
 
 const setupCardEvents = () => {

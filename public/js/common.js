@@ -33,7 +33,7 @@ const processData = (data) => {
         location.replace('/dashboard');
     } else if(data.product){
         location.replace('/dashboard');
-    } else if(data == 'review'){
+    } else if(data.review){
         alert('got the review');
         location.reload();
     }

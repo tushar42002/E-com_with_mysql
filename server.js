@@ -2,7 +2,8 @@ import express from "express";
 import bcrypt from "bcrypt";
 import stripe from "stripe";
 import con from './database/db.js';
-import fs from "fs";
+
+import multer from "multer";
 
 
 // inisiate server 
@@ -13,7 +14,7 @@ app.use(express.static("public"));
 app.use(express.json()); // enable form sharing
 
 // app.use(express.json({limit: '50mb'}));
-// app.use(express.urlencoded({limit: '50mb'}));
+app.use(express.urlencoded({ extended: false }));
 
 
 import "dotenv/config"
@@ -25,51 +26,27 @@ import "dotenv/config"
 app.get('/', (req, res) => {
     res.sendFile("index.html", { root: "public" });
 })
- 
 
 
-// function to encode file data to base64 encoded string
-function base64_encode(file) {
-    // read binary data
-    const bitmap = fs.readFileSync(file);
-    // convert binary data to base64 encoded string
-    return bitmap.toString('base64');
-  }
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+    },
+    filename: function (req, file, cb) {
+        let name = file.originalname;
+        cb(null, `${Date.now()}-${name.substring(name.length - 10, name.length)}`)
+    }
+})
+
+const upload = multer({ storage });
 
 // upload image 
-app.post('/image', (req, res) => {
+app.post('/image', upload.single("image"), (req, res) => {
 
     console.log(req.body);
-
-    // let base64Image = base64_encode(req.body.image);
-
-    // console.log(base64Image);
-
-
-      // insert image in database
-    //   let sql = `INSERT INTO images ( name, email, number, password, seller, date) VALUES ( '${name}', '${email}', '${number}', '${req.body.password}', '${false}', current_timestamp())`;
-
-    //   con.query(sql, function (err, result) {
-    //       if (err) {
-
-    //           console.log(err);
-
-    //           res.status(500).json({ "error": err });
-
-    //       } else {
-
-    //           console.log(result);
-
-    //           let sql = select *
-
-    //           res.json({
-    //               img_id: Imagebuilder,
-    //               image: base64Image
-    //           })
-    //       }
-    //   })
-
+    console.log(req.file);
+    res.json({ "image": req.file.filename });
 })
 
 
@@ -173,13 +150,13 @@ app.post('/login', (req, res) => {
                     console.log(result);
                     if (result) {
                         return res.json({
-                            name: row[0].name, 
+                            name: row[0].name,
                             email: row[0].email,
                             seller: row[0].seller
                         })
                     } else {
                         return res.json({ 'alert': 'password is incorrect' });
-                        console.log(err); 
+                        console.log(err);
                     }
                 })
             }
@@ -259,14 +236,30 @@ app.post('/add-product', (req, res) => {
     let { name, shortDes, detail, price, image, tags, email, draft, id } = req.body
 
     console.log(req.body);
+    let sql;
 
     // add-product
-zzz
-  
+    if (id) {
+        sql = `UPDATE users SET name = '${name}', short_des = '${shortDes}', price = '${price}', detail = '${detail}', tags = '${tags}', image = '${image}', user_email = '${email}', draft = '${draft}'  WHERE id = '${id}'`;
+    } else {
+        sql = `INSERT INTO products ( name, short_des, price, detail, tags, image, user_email, draft) VALUES ('${name}', '${shortDes}', '${price}', '${detail}', '${tags}', '${image}', '${email}', '${draft}')`;
+    }
+
+    con.query(sql, function (err, result) {
+        if (err) {
+            res.status(500).json({ "error": "sommething is wrong" });
+        } else {
+            res.json({'product':'product is added'});
+        }
+    })
+
+
 })
 
 app.post('/get-products', (req, res) => {
     let { email, id, tag } = req.body
+
+    console.log(req.body);
 
     if (id) {
         var sql = `SELECT * FROM products WHERE id = '${id}'`;
@@ -288,6 +281,7 @@ app.post('/get-products', (req, res) => {
         } else {
 
             if (id) {
+                console.log(result);
                 return res.json(result[0]);
 
             } else if (!result.length) {
@@ -295,8 +289,9 @@ app.post('/get-products', (req, res) => {
 
             } else {
                 let productArr = result;
+                console.log(productArr);
                 res.json(productArr);
-            } 
+            }
         }
     })
 
@@ -305,21 +300,25 @@ app.post('/get-products', (req, res) => {
 // delete route
 app.post('/delete-product', (req, res) => {
     let { id } = req.body;
+    console.log(id);
 
-    let sql = `DELETE FROM 'products' WHERE id = '${id}'`;
+    let sql = `DELETE FROM products WHERE id = ${id}`;
+    console.log(sql);
 
     con.query(sql, function (err, result) {
         if (err) {
+            console.log(err);
             res.status(500).json({ "error": "sommething is wrong" });
         } else {
-            res.json('success')
+            res.json({'success':'product is deleted'});
         }
     })
 
 })
 
 app.get('/product/:id', (req, res) => {
-    res.sendFile("product.html", { root: "public" })
+    //  console.log(req);
+    res.sendFile("product.html", { root: "public" });
 })
 
 app.get('/search/:key', (req, res) => {
@@ -328,8 +327,9 @@ app.get('/search/:key', (req, res) => {
 
 // review route
 
-app.get('/add-review', (req, res) => {
+app.post('/add-review', (req, res) => {
     let { headline, review, rate, email, product } = req.body;
+    console.log(req.body);
 
     // form validation
     if (!headline.length || !review.length || rate == 0 || email == null || !product) {
@@ -343,7 +343,7 @@ app.get('/add-review', (req, res) => {
         if (err) {
             res.json({ 'alert': 'some error occured' })
         } else {
-            return res.json('review')
+            return res.json({"review": "review is added"});
         }
     })
 
@@ -383,7 +383,7 @@ let DOMAIN = process.env.DOMAIN
 
 app.post('/strip-checkout', async (req, res) => {
     const session = await stripeGateway.checkout.sessions.create({
-        payment_method_type: ["card"],
+        payment_method_types: ["card"],
         mode: "payment",
         success_url: `${DOMAIN}/success?session_id={CHECKOUT_SESSION_ID}&order=${JSON.stringify(req.body)}`,
         cancel_url: `${DOMAIN}/checkout?payment_fail=true`,
@@ -394,7 +394,7 @@ app.post('/strip-checkout', async (req, res) => {
                     product_data: {
                         name: item.name,
                         description: item.shortDes,
-                        image: [item.image]
+                        image: [item.images]
                     },
                     unit_amount: item.price * 100
                 },
@@ -405,18 +405,20 @@ app.post('/strip-checkout', async (req, res) => {
     res.json(session.url)
 })
 
-app.get('/sucess', async (req, res) => {
-    let { order, session_id } = req.query;
+app.get('/success', async (req, res) => {
+    let { session_id } = req.query;
+
+    let order = JSON.parse(req.query.order)
 
     try {
-        const session = await stripeGateway.checkout.session.retrieve(session_id);
-        const customer = await stripeGateway.customers.retrieve(session.customer);
+        const session = await stripeGateway.checkout.sessions.retrieve(session_id);
 
 
-        let sql = `INSERT INTO orders ( user_email, order_detail, date) VALUES ( '${customer.email}', '${order}' current_timestamp())`;
+        let sql = `INSERT INTO orders (user_email, order_detail, date) VALUES ( '${order.email}', '${order}', current_timestamp())`;
 
         con.query(sql, function (err, result) {
             if (err) {
+                console.log(err);
                 res.status(500).json({ "error": "sommething is wrong" });
             } else {
                 res.redirect('/checkout?payment=done');
@@ -433,9 +435,9 @@ app.get('/404', (req, res) => {
     res.sendFile("404.html", { root: "public" })
 })
 
-app.use((req, res) => {
-    res.redirect('/404');
-})
+ app.use((req, res) => {
+     res.redirect('/404');
+ })
 
 app.listen(3000, () => {
     console.log('listening on port 3000');

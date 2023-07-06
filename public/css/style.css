@@ -44,7 +44,7 @@ body {
     transition: .5s;
 }
 
-.navbar.bg .link{
+.navbar.bg .link, .navbar.dark .link{
     color: #000;
     opacity: 0.5;
 }

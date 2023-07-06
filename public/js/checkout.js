@@ -14,15 +14,19 @@ window.onload = () =>{
     }
 }
 
+
 // select place order button
 const placeOrderBtn = document.querySelector('.place-order-btn');
 
 placeOrderBtn.addEventListener('click', () => {
     let address = getAddress();
 
-    if(address.address.length){
+    let objLenght = Object.keys(address).length;
+
+    if(objLenght){
+        console.log('payment');
             // send data to backend
-    fetch('/stripe-checkout',{
+    fetch('/strip-checkout',{
         method: 'post',
         headers: new Headers({'Content-Type': 'application/json'}),
         body: JSON.stringify({
@@ -41,12 +45,13 @@ placeOrderBtn.addEventListener('click', () => {
 
 const getAddress = () => {
     // form validate
-    let address = document.querySelector('#address');
-    let street = document.querySelector('#street');
-    let city = document.querySelector('#city');
-    let state = document.querySelector('#state');
-    let pincode = document.querySelector('#pincode');
-    let landmark = document.querySelector('#landmark');
+    let address = document.querySelector('#address').value;
+    let street = document.querySelector('#street').value;
+    let city = document.querySelector('#city').value;
+    let state = document.querySelector('#state').value;
+    let pincode = document.querySelector('#pincode').value;
+    let landmark = document.querySelector('#landmark').value;
+
 
     if(!address.length || !street.length || !city.length || !state.length || !pincode.length || !landmark.length ){
         return showFormError("fill all the inputs")

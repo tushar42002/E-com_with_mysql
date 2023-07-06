@@ -28,69 +28,37 @@ editables.map((element) => {
 // image upload
 let uploadInput = document.querySelector('#uplode-image');
 let imagePath = 'img/noImage.png'; // default image
+let imageForm = document.querySelector(".image-form");
 
-// const file = uploadInput.files[0];
-
-console.log(uploadInput.files[0]);
-
-uploadInput.addEventListener('change', async () => {
+uploadInput.addEventListener('change', () => {
     console.log('change');
-  
-    
-    
-    const file = uploadInput.files[0];
-    let imageUrl;
-    let imageId;
 
-    console.log(file.type);
+    const file = uploadInput.files[0];
+
+    console.log(uploadInput.files[0]);
+
     console.log(file);
 
     const formData = new FormData();
 
     formData.append('image', file);
-    
-    if(file.type.includes('image')){
 
-      await fetch('/image' , {
-            method:'POST',
-            headers:new Headers({'Content-Type':'image/png'}),
-            body:file
-        }).then(res => {
-            imagePath = res.image;
-            imageId = res.id;
+    if (file.type.includes('image')) {
+
+        fetch('/image', {
+            method: 'POST',
+            body: formData
+        }).then(res => res.json())
+        .then( data => {
+           
+            imagePath = `../uploads/${data.image}`;
 
             let productImage = document.querySelector('.product-img')
-            productImage.ser = imagePath;
+            productImage.src = imagePath;
         })
 
-
-        // means its an image 
-        // fetch('/image').then(res => res.json())
-        // .then(url => {
-        //     fetch(url, {
-        //         method: 'PUT',
-        //         headers: new Headers({'Content-Type': 'image/jpeg'}),
-        //         body: file
-        //     }). then(res => {
-        //         imagePath = url.split("?")[0];
-        //     })
-        // })
     }
 
-
-
-
-    // if (file.type.includes('image')) {
-        // means its an image 
-        // var reader = new FileReader();
-        // reader.readAsDataURL(uploadInput.files[0]);
-        // reader.onload =  () =>  {
-
-        //     imagePath = reader.result;
-
-        //     productImage.src = imagePath;
-        // }
-    // }
 })
 
 
@@ -126,7 +94,7 @@ addProductBtn.addEventListener('click', () => {
     } else {
         // submit
         loader.style.display = 'block';
-        let data = productData()
+        let data = productData();
         if (productId) {
             data.id = productId;
         }
@@ -145,7 +113,7 @@ const productData = () => {
         price: price.innerText,
         detail: detail.innerText,
         tags: tags.innerHTML,
-        image: imageId,
+        image: imagePath,
         email: JSON.parse(sessionStorage.user).email,
         draft: false
     }

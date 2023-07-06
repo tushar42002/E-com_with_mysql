@@ -5,24 +5,35 @@ let shortDes = document.querySelector('.product-des');
 let price = document.querySelector('.price');
 let detail = document.querySelector('.des');
 let tags = document.querySelector('.tags');
-let productImage = document.querySelector('.product-image');
+let productImage = document.querySelector('.product-img');
 let title = document.querySelector('title');
 
-let cartBtn = document.querySetector('.cart-btn') || null;
+const cartBtn = document.querySelector('.cart-btn') || null;
+
+console.log(cartBtn);
+
+let cartProductData;
+
 
 const setData = (data) => {
-    productName.innerHTML = title.innerHTML = data.name;
-    productImage.innerHTML = data.image;
-    shortDes.innerHTML = data.shortDes;
+    let { name, image } = data;
+    productName.innerHTML = title.innerHTML = name;
+    productImage.src = image;
+    shortDes.innerHTML = data.short_des;
     detail.innerHTML = data.detail;
-    price.innerHTML = data.price;
+    price.innerHTML = `$ ${data.price}`;
 
-    cartBtn.addEventListener(' click', () =>{
-        cartBtn.innerHTML = add_product_to_cart(data);
-    })
-    }
+    cartProductData = data;
+}
 
-const fetchProductData = () => {
+cartBtn.addEventListener('click', () =>{
+    console.log('cartProductData');
+    add_product_to_cart(cartProductData);
+    cartBtn.innerHTML = 'added to cart';
+})
+
+
+const fetchProductData = (product) => {
     fetch('/get-products', {
         method: 'post',
         headers: new Headers({ 'Content-Type': 'application/json' }),
@@ -31,16 +42,16 @@ const fetchProductData = () => {
         .then(data => {
             setData(data);
             getProducts(data.tags[0])
-            .then(res => createProductCards(res, 'similar product', '.best-selling-product-section'))
+                .then(res => createProductCards(res, 'similar product', '.best-selling-product-section'))
         })
         .catch(err => {
-            console.log(err)
-            alert('no product found')
+            // alert('no product found')
+            console.log('no product found');
         })
 }
 
 let productId = null;
 if (location.pathname != '/add-product') {
     productId = decodeURI(location.pathname.split('/').pop());
-    fetchProductData();
+    fetchProductData(productId);
 }

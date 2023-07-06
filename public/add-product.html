@@ -2,86 +2,85 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>online store - Add Product </title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>online store - Add Product</title>
 
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/product.css">
-    <link rel="stylesheet" href="css/add-product.css">
-
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/product.css" />
+  <link rel="stylesheet" href="css/add-product.css" />
 </head>
 
 <body>
+  <img src="./img/loading.gif" class="loader" alt="" />
 
-    <img src="./img/loading.gif" class="loader" alt="">
+  <h1 class="title">add product</h1>
 
-    <h1 class="title">add product</h1>
+  <div class="error">
+    <p>some error occured</p>
+  </div>
 
-    <div class="error">
-        <p>some error occured</p>
-    </div>
-  
+  <!-- product detail -->
+  <section class="product-section">
+    <!-- --------- uplode image ------ -->
+    <div class="image-upload-container">
 
-    <!-- product detail -->
-    <section class="product-section">
-
-        <!-- --------- uplode image ------ -->
-        <div class="image-upload-container">
-            <input type="file" name="" id="uplode-image" accept="image/png, image/jpeg, image/jpg" hidden>
-            <label for="uplode-image" class="upload-overlay">upload image</label>
-            <img  class="product-img">
-        </div>
-
-        <div class="product-detail">
-            <h1 class="product-title" contenteditable="true" data-placeholder="product name">premium sofa</h1>
-            <p class="product-des" contenteditable="true" data-placeholder="short description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa excepturi commodi ipsa
-                consequatur sit error?</p>
-            <div class="ratings disable">
-                <img src="img/fill star.png" class="star">
-                <img src="img/fill star.png" class="star">
-                <img src="img/fill star.png" class="star">
-                <img src="img/fill star.png" class="star">
-                <img src="img/no fill star.png" class="star">
-                <span class="rating-count">4,203 reviews</span>
-            </div>
-            <p class="price" contenteditable="true" data-placeholder="price without $">$ 499</p>
-            <div class="btn-container disable">
-                <button class="product-btn buy-btn">buy now</button>
-                <button class="product-btn cart-btn">add to cart</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="detail-des">
-        <h1 class="section-title">details</h1>
-        <p class="des" contenteditable="true" data-placeholder="Detail, you can add image using HTML img tag"></p>
-    </section>
-
-    <section class="tags-section">
-        <h1 class="section-title">tags</h1>
-        <p class="text">enter some tag related to product this will help in searching the product. Give comma saprated tags</p>
-        <p class="tags" contenteditable="true" data-placeholder="Detail, you can add image using HTML img tag"> 3 tags atleast</p>
-    </section>
-
-
- 
-    <div class="btn-wrapper">
-        <button class="product-btn add-product-btn"> add product</button>
-        <button class="product-btn draft-btn"> save draft</button>
+        <input type="file" name="product-img" id="uplode-image" accept="image/png, image/jpeg, image/jpg" hidden />
+        <label for="uplode-image" class="upload-overlay">upload image</label>
+      
+      <img class="product-img"/>
     </div>
 
+    <div class="product-detail">
+      <h1 class="product-title" contenteditable="true" data-placeholder="product name">
+        premium sofa
+      </h1>
+      <p class="product-des" contenteditable="true" data-placeholder="short description">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa
+        excepturi commodi ipsa consequatur sit error?
+      </p>
+      <div class="ratings disable">
+        <img src="img/fill star.png" class="star" />
+        <img src="img/fill star.png" class="star" />
+        <img src="img/fill star.png" class="star" />
+        <img src="img/fill star.png" class="star" />
+        <img src="img/no fill star.png" class="star" />
+        <span class="rating-count">4,203 reviews</span>
+      </div>
+      <p class="price" contenteditable="true" data-placeholder="price without $">
+        $ 499
+      </p>
+      <div class="btn-container disable">
+        <button class="product-btn buy-btn">buy now</button>
+        <button class="product-btn cart-btn">add to cart</button>
+      </div>
+    </div>
+  </section>
 
+  <section class="detail-des">
+    <h1 class="section-title">details</h1>
+    <p class="des" contenteditable="true" data-placeholder="Detail, you can add image using HTML img tag"></p>
+  </section>
 
+  <section class="tags-section">
+    <h1 class="section-title">tags</h1>
+    <p class="text">
+      enter some tag related to product this will help in searching the
+      product. Give comma saprated tags
+    </p>
+    <p class="tags" contenteditable="true" data-placeholder="Detail, you can add image using HTML img tag">
+      3 tags atleast
+    </p>
+  </section>
 
+  <div class="btn-wrapper">
+    <button class="product-btn add-product-btn">add product</button>
+    <button class="product-btn draft-btn">save draft</button>
+  </div>
 
-
-
-
-    <script src="js/add-product.js"></script>
-    <script src="js/common.js"></script>
-
+  <script src="js/add-product.js"></script>
+  <script src="js/common.js"></script>
 </body>
 
 </html>

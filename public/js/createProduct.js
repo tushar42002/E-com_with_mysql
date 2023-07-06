@@ -26,8 +26,9 @@ const deleteItem = (id) => {
     }).then(res => res.json())
     .then(data => {
         // process data
+        console.log(data);
         if(data == 'success'){
-            location.replace()
+            location.replace();
         } else{
             showAlert('some error occured')
         }

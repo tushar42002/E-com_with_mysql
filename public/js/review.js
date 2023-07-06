@@ -6,9 +6,9 @@ ratingStarInput.map((star, index) => {
         rate = `${index +1}.0`;
         for (let i = 0; i < 5; i++) {
             if (i <= index) {
-                ratingStarInput[i].src = 'img/fill star.png';
+                ratingStarInput[i].src = '../img/fill star.png';
             } else {
-                ratingStarInput[i].src = 'img/no fill star.png';
+                ratingStarInput[i].src = '../img/no fill star.png';
             }
         }
     })
@@ -20,7 +20,8 @@ let reviewHeadline = document.querySelector('.review-headline');
 let review = document.querySelector('.review-field');
 let loader = document.querySelector('.loader');
 
-let addReviewBtn = document.querySelector('.add-review- btn');
+
+let addReviewBtn = document.querySelector('.add-review-btn');
 
 addReviewBtn.addEventListener('click', () => {
     // form validation
@@ -32,7 +33,7 @@ addReviewBtn.addEventListener('click', () => {
         } else if(reviewHeadline.value.length > 50){
             showFormError('headline should not be more than 50 letter');
         
-        } else if(review.value.length > 50){
+        } else if(review.value.length > 150){
             showFormError('review should not be more than 150 letter');
         
         } else{
@@ -81,12 +82,6 @@ const createReviewSection = (data) =>{
   <h1 class="section-title">Reviews</h1>
   <div class="review-container">
       ${createReviewCard(data)}
-      <div class="review-card">
-          <div class="user-dp" data-rating="4.9"><img src="img/user 1.png" alt=""></div>
-          <h2 class="review-title">best quelity more than excepted</h2>
-          <p class="review">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque culpa deleniti
-              illo? Deleniti, praesentium animi!</p>
-      </div>
   </div> 
   `
 }
@@ -97,7 +92,7 @@ const createReviewCard = (data) => {
         if(data[i]){
             cards +=`
             <div class="review-card">
-               <div class="user-dp" data-rating="${data[i].rate}"><img src="img/user-icon.png" alt=""></div>
+               <div class="user-dp" data-rating="${data[i].rating}"><img src="../img/user-icon.png" alt=""></div>
                <h2 class="review-title">${data[i].headline}</h2>
                <p> ${data[i].review } </p>
             </div>
