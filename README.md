@@ -13,3 +13,6 @@
 #multer for images
 
 #payment gateway stripe
+
+
+# exported database file is also given name of file is e-come.sql
