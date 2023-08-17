@@ -1,4 +1,4 @@
-﻿# E-com_with_mysql
+﻿#E-com_with_mysql
 # npm run start
 
 #host localhost
@@ -15,4 +15,4 @@
 #payment gateway stripe
 
 
-# exported database file is also given name of file is e-come.sql
+#exported database file is also given in repo and  name of file is e-come.sql
