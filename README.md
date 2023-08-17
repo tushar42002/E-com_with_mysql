@@ -1,4 +1,5 @@
-﻿#E-com_with_mysql
+﻿#E-com_with_mysql using node.js
+
 # npm run start
 
 #host localhost
